@@ -7,7 +7,7 @@ import newrelic.agent
 
 
 # Service information
-SERVICE_NAME = 'ows-app-name'
+SERVICE_NAME = 'ows-crud-app'
 SERVICE_VERSION = '1.0.0'
 
 # Production environment

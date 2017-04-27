@@ -20,9 +20,9 @@ from flask import request
 from oto import response
 from oto.adaptors.flask import flaskify
 
-from app_name import config
-from app_name.api import app
-from app_name.logic import hello
+from crud_app import config
+from crud_app.api import app
+from crud_app.logic import hello
 
 
 @app.route('/', methods=['GET'])
