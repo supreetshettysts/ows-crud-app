@@ -27,8 +27,11 @@ from crud_app.logic import hello
 
 @app.route('/', methods=['GET'])
 def hello_world():
-    """Hello World with an optional GET param "name"."""
+    """Hello World with an optional GET param "name"."""    
     name = request.args.get('name', '')
+    print("In hello world()")
+    print(config.DB_CREDENTIALS)
+    # name = request.args.post('name', '')
     return flaskify(hello.say_hello(name))
 
 
@@ -40,6 +43,25 @@ def hello_world_username(username):
         username (str): the user's username.
     """
     return flaskify(hello.say_hello(username))
+
+
+@app.route('/nodes', methods=['GET'])
+def hello_nodes():
+    """Hello World on /<username>.
+
+    Args:
+        username (str): the user's username.
+    """
+    return flaskify(hello.hello_nodes_logic())
+
+@app.route('/node/<nodeid>', methods=['GET'])
+def hello_node(nodeid):
+    """Hello World on /<username>.
+
+    Args:
+        username (str): the user's username.
+    """
+    return flaskify(hello.hello_nodeid(nodeid))
 
 
 @app.route(config.HEALTH_CHECK, methods=['GET'])
