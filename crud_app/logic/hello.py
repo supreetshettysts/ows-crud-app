@@ -7,7 +7,7 @@ future will survive an apocalypse.
 In other words: always make sure that whenever you add a description it's
 something meaningful that you will enjoy reading days, months, or years later.
 One more thing: you will automatically be associated with those, and some of us
-really enjoy “git blame”.
+really enjoy "git blame".
 """
 
 from oto import response

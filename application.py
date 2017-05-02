@@ -2,9 +2,9 @@
 
 from raven.contrib import flask
 
-from app_name import api
-from app_name import config
-from app_name import handlers  # noqa
+from crud_app import api
+from crud_app import config
+from crud_app import handlers  # noqa
 
 
 if config.SENTRY:
