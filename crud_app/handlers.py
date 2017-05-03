@@ -29,8 +29,6 @@ from crud_app.logic import hello
 def hello_world():
     """Hello World with an optional GET param "name"."""    
     name = request.args.get('name', '')
-    print("In hello world()")
-    print(config.DB_CREDENTIALS)
     # name = request.args.post('name', '')
     return flaskify(hello.say_hello(name))
 
@@ -62,6 +60,33 @@ def hello_node(nodeid):
         username (str): the user's username.
     """
     return flaskify(hello.hello_nodeid(nodeid))
+
+@app.route('/delete/node/<nodeid>', methods=['GET'])
+def remove_node(nodeid):
+    """
+    Args:
+        nodeid (int): Node ID 
+    """
+    return flaskify(hello.remove_nodeid(nodeid))
+
+
+@app.route('/update/node/<nodeid>/', methods=['GET'])
+def update_node(nodeid):
+    """Update <nodeid> with param values for right keys
+
+    Args:
+        nodeid (int): Node ID 
+    """
+    paramdict = request.args
+    if len(paramdict):
+        keyvalue_tuples = dict(paramdict)
+        # paramdict = keyvalue_tuples # Convert immutable paramter tuples into a key value dictionary
+
+        paramdict = {k:v[0] for k,v in keyvalue_tuples.items()} # Convertinto a key value dictionary
+    else:
+        paramdict = {}
+    # print(paramdict)
+    return flaskify(hello.update_nodeid(nodeid,paramdict))
 
 
 @app.route(config.HEALTH_CHECK, methods=['GET'])

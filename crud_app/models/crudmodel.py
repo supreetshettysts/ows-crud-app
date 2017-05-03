@@ -25,6 +25,7 @@ class Node(mysql.BaseModel):
     test_id = Column(
         'id', Integer, primary_key=True, autoincrement=True, nullable=False)
     name = Column(String)
+    surname = Column(String)
 
     def to_dict(self):
         """to_dict Method.
@@ -34,7 +35,8 @@ class Node(mysql.BaseModel):
         """
         return {
             'id': self.test_id,
-            'name': self.name
+            'name': self.name,
+            'surname':self.surname
         }
 
 
@@ -75,7 +77,27 @@ def get_nodes_all():
             return response.Response(message=total_records)
 
 def get_node_for(nodeid):
-    """Get nodefor passed node id
+    """Get node for passed node id
+
+    Args:
+        nodeid (int): the id of the node.
+
+    Returns:
+        response.Response: the node data for the said nodeid.
+    """
+    with mysql.db_session() as session:
+        result_set = session.query(Node).get(nodeid)
+        if result_set:
+            node_name = result_set.name
+            node_sname = result_set.surname
+            nodejson = result_set.to_dict()
+        else:
+            nodejson = {"message":"No Node exists for given nodeid"}
+
+    return response.Response(message=nodejson)
+
+def delete_node(nodeid):
+    """Delete node for passed node id
 
     Args:
         nodeid (int): the id of the node.
@@ -87,6 +109,30 @@ def get_node_for(nodeid):
         result_set = session.query(Node).get(nodeid)
         node_name = result_set.name
         nodejson = result_set.to_dict()
-    return response.Response(message=nodejson)
+        session.delete(result_set)
+
+    return response.Response(message=("Deleted node {}").format(nodejson))
+
+def update_node(nodeid,paramdict):
+    """Update node for passed node id
+
+    Args:
+        nodeid (int): the id of the node.
+
+    Returns:
+        response.Response: the node data for the said nodeid.
+    """
+    with mysql.db_session() as session:
+        result_set = session.query(Node).get(nodeid)
+        # keyvalue_tuples = param_imdict[0]
+        # paramdict = keyvalue_tuples # Convert immutable paramter tuples into a key value dictionary
+        # paramdict = {t[0]:t[1] for t in keyvalue_tuples} # Convert immutable paramter tuples into a key value dictionary
+        node_name = result_set.name
+        nodejson = result_set.to_dict()
+        for colname,colval in paramdict.items():
+            setattr(result_set,colname,colval)
+        session.merge(result_set)
+
+    return response.Response(message=("Updated node {} with {}").format(nodejson,paramdict))
 
 

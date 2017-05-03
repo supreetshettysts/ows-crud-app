@@ -44,6 +44,35 @@ def hello_nodeid(nodeid):
         Response: Node for the nodeid that's passed as arg
     """
     res = crudmodel.get_node_for(nodeid)
+    # print(res)
+    # if not res:
+    # 	res = {"message":"No Node exists for given nodeid"}
+
+    return res
+    	
+
+def remove_nodeid(nodeid):
+    """
+    Args:
+    	nodeid (int): Node ID to delete
+    Returns:
+        Response: Status code for operation
+    """
+    res = crudmodel.delete_node(nodeid)
+    if res:
+    	return res
+
+def update_nodeid(nodeid,paramdict):
+    """
+    Args:
+    	nodeid (int): Node ID to update for new column values as passed
+    	paramdict (dict): Column names and their new values to be used for replacement
+    Returns:
+        Response: Status code for operation
+    """
+    # paramdict ={} 
+    # print(paramdict)
+    res = crudmodel.update_node(nodeid,paramdict)
     if res:
     	return res
 
