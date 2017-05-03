@@ -88,6 +88,24 @@ def update_node(nodeid):
     # print(paramdict)
     return flaskify(hello.update_nodeid(nodeid,paramdict))
 
+@app.route('/add/node/', methods=['GET'])
+def add_node():
+    """Update <nodeid> with param values for right keys
+
+    Args:
+        nodeid (int): Node ID 
+    """
+    paramdict = request.args
+    if len(paramdict):
+        keyvalue_tuples = dict(paramdict)
+        # paramdict = keyvalue_tuples # Convert immutable paramter tuples into a key value dictionary
+
+        paramdict = {k:v[0] for k,v in keyvalue_tuples.items()} # Convertinto a key value dictionary
+    else:
+        paramdict = {}
+    # print(paramdict)
+    return flaskify(hello.add_node(paramdict))
+
 
 @app.route(config.HEALTH_CHECK, methods=['GET'])
 def health():

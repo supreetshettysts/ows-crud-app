@@ -76,3 +76,14 @@ def update_nodeid(nodeid,paramdict):
     if res:
     	return res
 
+def add_node(paramdict):
+    """
+    Args:
+    	paramdict (dict): Column names and their values
+    Returns:
+        Response: Status code for operation
+    """
+    res = crudmodel.create_node(paramdict)
+    if res:
+    	return res
+

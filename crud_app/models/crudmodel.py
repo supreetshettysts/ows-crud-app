@@ -4,7 +4,6 @@ This is just a model sample. It depends on which database you want to use but
 basically make sure this file only contains methods and classes that are
 related to this model.
 """
-
 from oto import response
 from sqlalchemy import Column
 from sqlalchemy import Integer
@@ -62,10 +61,9 @@ def get_nodes_all():
     """Get all nodes
 
     Args:
-        id (int): the id of the model.
 
     Returns:
-        response.Response: the data of the model.
+        response.Response: All the nodes from the table
     """
     with mysql.db_session() as session:
             result_set = session.query(Node).all()
@@ -134,5 +132,26 @@ def update_node(nodeid,paramdict):
         session.merge(result_set)
 
     return response.Response(message=("Updated node {} with {}").format(nodejson,paramdict))
+
+def create_node(paramdict):
+    """Update node for passed node id
+
+    Args:
+            paramdict: Dictionary column value pairs to be added as a row
+    Returns:
+        response.Response: the node 
+    """
+
+    # valid_paramdict = [k:v for k,v in paramdict if k in ]
+    with mysql.db_session() as session:
+        try:
+            new_node = Node(**paramdict)
+            session.add(new_node)
+            response_message = "Successfully added"
+        except:
+            response_message = "Please add correct key value pairs"
+    session.close()
+
+    return response.Response(response_message)
 
 
