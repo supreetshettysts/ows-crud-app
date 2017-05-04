@@ -5,6 +5,7 @@ as registering a url for a specific handlers.
 """
 
 from flask import Flask
+
 from owslogger import flask_logger
 from owsrequest import flask_request
 

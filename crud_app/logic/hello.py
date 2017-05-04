@@ -9,8 +9,8 @@ something meaningful that you will enjoy reading days, months, or years later.
 One more thing: you will automatically be associated with those, and some of us
 really enjoy "git blame".
 """
-
 from oto import response
+
 from crud_app.models import crudmodel
 
 
@@ -27,6 +27,7 @@ def say_hello(name=None):
 
     return response.Response('Hello {}!'.format(name))
 
+
 def hello_nodes_logic():
     """
     Returns:
@@ -36,10 +37,11 @@ def hello_nodes_logic():
     if res:
         return res
 
+
 def hello_nodeid(nodeid):
     """
     Args:
-    	nodeid (int): Node ID to display
+        nodeid (int): Node ID to display
     Returns:
         Response: Node for the nodeid that's passed as arg
     """
@@ -49,41 +51,41 @@ def hello_nodeid(nodeid):
     # 	res = {"message":"No Node exists for given nodeid"}
 
     return res
-    	
+
 
 def remove_nodeid(nodeid):
     """
     Args:
-    	nodeid (int): Node ID to delete
+        nodeid (int): Node ID to delete
     Returns:
         Response: Status code for operation
     """
     res = crudmodel.delete_node(nodeid)
     if res:
-    	return res
+        return res
 
-def update_nodeid(nodeid,paramdict):
+
+def update_nodeid(nodeid, paramdict):
     """
     Args:
-    	nodeid (int): Node ID to update for new column values as passed
-    	paramdict (dict): Column names and their new values to be used for replacement
+        nodeid (int): Node ID to update for new column values as passed
+        paramdict (dict): Column names and their new values to be
+        used for replacement
     Returns:
         Response: Status code for operation
     """
-    # paramdict ={} 
-    # print(paramdict)
-    res = crudmodel.update_node(nodeid,paramdict)
+    res = crudmodel.update_node(nodeid, paramdict)
     if res:
-    	return res
+        return res
+
 
 def add_node(paramdict):
     """
     Args:
-    	paramdict (dict): Column names and their values
+        paramdict (dict): Column names and their values
     Returns:
         Response: Status code for operation
     """
     res = crudmodel.create_node(paramdict)
     if res:
-    	return res
-
+        return res

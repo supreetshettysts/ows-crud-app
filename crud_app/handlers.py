@@ -11,16 +11,16 @@ for clarity
 See:
     oto.response for more details.
 """
-from crud_app import config
-from crud_app.api import app
-from crud_app.logic import hello
-
 from flask import g
 from flask import jsonify
 from flask import request
 
-from oto import response
 from oto.adaptors.flask import flaskify
+from oto import response
+
+from crud_app.api import app
+from crud_app import config
+from crud_app.logic import hello
 
 
 @app.route('/', methods=['GET'])
