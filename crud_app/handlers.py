@@ -11,7 +11,9 @@ for clarity
 See:
     oto.response for more details.
 """
-
+from crud_app import config
+from crud_app.api import app
+from crud_app.logic import hello
 
 from flask import g
 from flask import jsonify
@@ -20,14 +22,10 @@ from flask import request
 from oto import response
 from oto.adaptors.flask import flaskify
 
-from crud_app import config
-from crud_app.api import app
-from crud_app.logic import hello
-
 
 @app.route('/', methods=['GET'])
 def hello_world():
-    """Hello World with an optional GET param "name"."""    
+    """Hello World with an optional GET param "name"."""
     name = request.args.get('name', '')
     # name = request.args.post('name', '')
     return flaskify(hello.say_hello(name))
@@ -52,6 +50,7 @@ def hello_nodes():
     """
     return flaskify(hello.hello_nodes_logic())
 
+
 @app.route('/node/<nodeid>', methods=['GET'])
 def hello_node(nodeid):
     """Hello World on /<username>.
@@ -61,46 +60,44 @@ def hello_node(nodeid):
     """
     return flaskify(hello.hello_nodeid(nodeid))
 
-@app.route('/delete/node/<nodeid>', methods=['GET'])
+
+@app.route('/delete/node/<nodeid>', methods=['DELETE'])
 def remove_node(nodeid):
     """
     Args:
-        nodeid (int): Node ID 
+        nodeid (int): Node ID
     """
     return flaskify(hello.remove_nodeid(nodeid))
 
 
 @app.route('/update/node/<nodeid>/', methods=['GET'])
 def update_node(nodeid):
-    """Update <nodeid> with param values for right keys
+    """Update <nodeid> with param values for right keys.
 
     Args:
-        nodeid (int): Node ID 
+        nodeid (int): Node ID
     """
     paramdict = request.args
     if len(paramdict):
         keyvalue_tuples = dict(paramdict)
-        # paramdict = keyvalue_tuples # Convert immutable paramter tuples into a key value dictionary
-
-        paramdict = {k:v[0] for k,v in keyvalue_tuples.items()} # Convertinto a key value dictionary
+        paramdict = {k: v[0] for k, v in keyvalue_tuples.items()}
     else:
         paramdict = {}
-    # print(paramdict)
-    return flaskify(hello.update_nodeid(nodeid,paramdict))
+    return flaskify(hello.update_nodeid(nodeid, paramdict))
+
 
 @app.route('/add/node/', methods=['GET'])
 def add_node():
     """Update <nodeid> with param values for right keys
 
     Args:
-        nodeid (int): Node ID 
+        nodeid (int): Node ID
     """
     paramdict = request.args
     if len(paramdict):
         keyvalue_tuples = dict(paramdict)
-        # paramdict = keyvalue_tuples # Convert immutable paramter tuples into a key value dictionary
-
-        paramdict = {k:v[0] for k,v in keyvalue_tuples.items()} # Convertinto a key value dictionary
+        paramdict = {k: v[0] for k, v in keyvalue_tuples.items()}
+        # Convertinto a key value dictionary
     else:
         paramdict = {}
     # print(paramdict)
