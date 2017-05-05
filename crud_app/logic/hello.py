@@ -65,7 +65,7 @@ def remove_nodeid(nodeid):
         return res
 
 
-def update_nodeid(nodeid, paramdict):
+def update_nodeid(paramdict):
     """
     Args:
         nodeid (int): Node ID to update for new column values as passed
@@ -74,7 +74,7 @@ def update_nodeid(nodeid, paramdict):
     Returns:
         Response: Status code for operation
     """
-    res = crudmodel.update_node(nodeid, paramdict)
+    res = crudmodel.update_node(paramdict)
     if res:
         return res
 

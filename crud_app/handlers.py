@@ -70,8 +70,8 @@ def remove_node(nodeid):
     return flaskify(hello.remove_nodeid(nodeid))
 
 
-@app.route('/update/node/<nodeid>/', methods=['GET'])
-def update_node(nodeid):
+@app.route('/update/node/', methods=['GET'])
+def update_node():
     """Update <nodeid> with param values for right keys.
 
     Args:
@@ -83,7 +83,7 @@ def update_node(nodeid):
         paramdict = {k: v[0] for k, v in keyvalue_tuples.items()}
     else:
         paramdict = {}
-    return flaskify(hello.update_nodeid(nodeid, paramdict))
+    return flaskify(hello.update_nodeid(paramdict))
 
 
 @app.route('/add/node/', methods=['GET'])

@@ -119,17 +119,17 @@ def delete_node(nodeid):
     return response.Response(message=response_message)
 
 
-def update_node(nodeid, paramdict):
-    """Update node for passed node id
+def update_node(paramdict):
+    """Update node for passed node
 
     Args:
-        nodeid (int): the id of the node.
+        paramdict: Dictionary of column:columnvalue
 
     Returns:
         response.Response: the node data for the said nodeid.
     """
     with mysql.db_session() as session:
-        result_set = session.query(Node).get(nodeid)
+        result_set = session.query(Node).get(paramdict['id'])
         if result_set:
             nodejson = result_set.to_dict()
             for colname, colval in paramdict.items():
