@@ -24,7 +24,7 @@ class Node(mysql.BaseModel):
 
     __tablename__ = 'supreet_node'
 
-    test_id = Column(
+    id = Column(
         'id', Integer, primary_key=True, autoincrement=True, nullable=False)
     name = Column(String)
     surname = Column(String)
@@ -36,7 +36,7 @@ class Node(mysql.BaseModel):
 
         """
         return {
-            'id': self.test_id,
+            'id': self.id,
             'name': self.name,
             'surname': self.surname
         }
@@ -93,7 +93,7 @@ def get_node_for(nodeid):
         if result_set:
             nodejson = result_set.to_dict()
         else:
-            nodejson = {'message': 'No Node exists for given nodeid'}
+            nodejson = 'No Node exists for given nodeid'
 
     return response.Response(message=nodejson)
 
@@ -112,9 +112,9 @@ def delete_node(nodeid):
         if result_set:
             nodejson = result_set.to_dict()
             session.delete(result_set)
-            response_message = ('Deleted node {}').format(nodejson)
+            response_message = 'Node deleted successfully'
         else:
-            response_message = 'No node found'
+            response_message = 'No node found to delete'
 
     return response.Response(message=response_message)
 
@@ -128,20 +128,22 @@ def update_node(paramdict):
     Returns:
         response.Response: the node data for the said nodeid.
     """
-    with mysql.db_session() as session:
-        result_set = session.query(Node).get(paramdict['id'])
-        if result_set:
-            nodejson = result_set.to_dict()
-            for colname, colval in paramdict.items():
-                setattr(result_set, colname, colval)
-            session.merge(result_set)
-            response_message = message=('Updated node {} with \
-                                {}').format(nodejson, paramdict)
-        else:
-            response_message = 'No node found'
+    if 'id' in paramdict:
+        with mysql.db_session() as session:
+            result_set = session.query(Node).get(paramdict['id'])
+            if result_set:
+                nodejson = result_set.to_dict()
+                for colname, colval in paramdict.items():
+                    setattr(result_set, colname, colval)
+                session.merge(result_set)
+                response_message = message=('Updated node successfully')
+            else:
+                response_message = 'No such node found to update'
+    else:
+         response_message = 'Update parameters cannot be blank'   
 
 
-    return response.Response(response_message)
+    return response.Response(message=response_message)
 
 
 def create_node(paramdict):
@@ -152,13 +154,17 @@ def create_node(paramdict):
     Returns:
         response.Response: the node
     """
-    with mysql.db_session() as session:
-        try:
-            new_node = Node(**paramdict)
-            session.add(new_node)
-            response_message = 'Successfully added'
-        except:
-            response_message = 'Please add correct key value pairs'
-    session.close()
+    if paramdict!={}:
+        with mysql.db_session() as session:
+            try:
+                new_node = Node(**paramdict)
+                session.add(new_node)
+                response_message = 'Successfully added'
+            except Exception as e:
+                response_message = 'Please add correct key value pairs'
+                print(e)
+        session.close()
+    else:
+        response_message = 'Blank Node cannot be created'
 
     return response.Response(response_message)
