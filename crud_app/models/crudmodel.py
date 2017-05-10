@@ -73,7 +73,7 @@ def get_nodes_all():
             result_set = session.query(Node).all()
 
             if not result_set:
-                return response.Response('No nodes found')
+                return response.Response(message='No nodes found')
 
             total_records = [r.to_dict() for r in result_set]
             return response.Response(message=total_records)
@@ -94,6 +94,7 @@ def get_node_for(nodeid):
             nodejson = result_set.to_dict()
         else:
             nodejson = 'No Node exists for given nodeid'
+            
 
     return response.Response(message=nodejson)
 
@@ -136,7 +137,7 @@ def update_node(paramdict):
                 for colname, colval in paramdict.items():
                     setattr(result_set, colname, colval)
                 session.merge(result_set)
-                response_message = message=('Updated node successfully')
+                response_message = 'Updated node successfully'
             else:
                 response_message = 'No such node found to update'
     else:
@@ -154,17 +155,17 @@ def create_node(paramdict):
     Returns:
         response.Response: the node
     """
+
     if paramdict!={}:
         with mysql.db_session() as session:
             try:
                 new_node = Node(**paramdict)
                 session.add(new_node)
                 response_message = 'Successfully added'
-            except Exception as e:
+            except:
                 response_message = 'Please add correct key value pairs'
-                print(e)
         session.close()
     else:
         response_message = 'Blank Node cannot be created'
 
-    return response.Response(response_message)
+    return response.Response(message=response_message)
