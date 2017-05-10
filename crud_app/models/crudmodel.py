@@ -1,9 +1,4 @@
-"""Model Sample.
-
-This is just a model sample. It depends on which database you want to use but
-basically make sure this file only contains methods and classes that are
-related to this model.
-"""
+"""Model for CRUD app"""
 
 from sqlalchemy import Column
 from sqlalchemy import Integer
@@ -42,25 +37,6 @@ class Node(mysql.BaseModel):
         }
 
 
-# def get_by_id(model_id):
-    """Get a model by its id.
-
-    Note:
-        This is just an example on how to do a request from a microservice
-        to another microservice using the owsrequest.request module. The module
-        will create the HMAC for the request and will automatically calculate
-        the next correlation id.
-
-    Args:
-        id (int): the id of the model.
-
-    Returns:
-        response.Response: the data of the model.
-    """
-    # model = request.get('ows-microservice', '/resource')
-    # return response.Response(message=model.json(), status=model.status_code)
-
-
 def get_nodes_all():
     """Get all nodes
 
@@ -73,7 +49,7 @@ def get_nodes_all():
             result_set = session.query(Node).all()
 
             if not result_set:
-                return response.Response(message='No nodes found')
+                return response.Response(message=response.create_not_found_response('No nodes found'))
 
             total_records = [r.to_dict() for r in result_set]
             return response.Response(message=total_records)
@@ -91,12 +67,12 @@ def get_node_for(nodeid):
     with mysql.db_session() as session:
         result_set = session.query(Node).get(nodeid)
         if result_set:
-            nodejson = result_set.to_dict()
+            response_message = response.Response(message=result_set.to_dict())
         else:
-            nodejson = 'No Node exists for given nodeid'
+            response_message = response.create_not_found_response('No Node exists for given nodeid')
             
 
-    return response.Response(message=nodejson)
+    return response_message
 
 
 def delete_node(nodeid):
@@ -111,40 +87,40 @@ def delete_node(nodeid):
     with mysql.db_session() as session:
         result_set = session.query(Node).get(nodeid)
         if result_set:
-            nodejson = result_set.to_dict()
             session.delete(result_set)
-            response_message = 'Node deleted successfully'
+            response_message = response.Response(message='Node deleted successfully')
         else:
-            response_message = 'No node found to delete'
+            response_message = response.create_not_found_response('No node found to delete')
 
-    return response.Response(message=response_message)
+    return response_message
 
 
-def update_node(paramdict):
+def update_node(nodeid,paramdict):
     """Update node for passed node
 
     Args:
+        nodeid: Node ID to update for new column values as passed
         paramdict: Dictionary of column:columnvalue
 
     Returns:
         response.Response: the node data for the said nodeid.
     """
-    if 'id' in paramdict:
-        with mysql.db_session() as session:
-            result_set = session.query(Node).get(paramdict['id'])
-            if result_set:
-                nodejson = result_set.to_dict()
-                for colname, colval in paramdict.items():
-                    setattr(result_set, colname, colval)
-                session.merge(result_set)
-                response_message = 'Updated node successfully'
-            else:
-                response_message = 'No such node found to update'
-    else:
-         response_message = 'Update parameters cannot be blank'   
+    print(type(paramdict))
+    if nodeid is None:
+        return response.create_error_response('Node ID is mandatory')  
 
+    with mysql.db_session() as session:
+        result_set = session.query(Node).get(nodeid)
+        if result_set:
+            for colname, colval in paramdict.items():
+                setattr(result_set, colname, colval)
+            session.merge(result_set)
 
-    return response.Response(message=response_message)
+            response_message = response.Response(message=result_set.to_dict())
+        else:
+            response_message = response.create_not_found_response('No such node found to update')
+
+    return response_message
 
 
 def create_node(paramdict):
@@ -156,16 +132,14 @@ def create_node(paramdict):
         response.Response: the node
     """
 
-    if paramdict!={}:
-        with mysql.db_session() as session:
-            try:
-                new_node = Node(**paramdict)
-                session.add(new_node)
-                response_message = 'Successfully added'
-            except:
-                response_message = 'Please add correct key value pairs'
-        session.close()
-    else:
-        response_message = 'Blank Node cannot be created'
+    if paramdict is None or 'name' not in paramdict \
+                                    or 'surname' not in paramdict:
+        return response.create_error_response(message='Name and surname is mandatory',code=500)
+    
+    with mysql.db_session() as session:
+        new_node = Node(name=paramdict.get('name'),surname=paramdict.get('surname'))
+        session.add(new_node)
+        response_message = response.Response(message=paramdict)
+        
 
-    return response.Response(message=response_message)
+    return response_message

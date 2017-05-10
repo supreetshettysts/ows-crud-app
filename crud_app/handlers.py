@@ -52,25 +52,20 @@ def remove_node(nodeid):
     return flaskify(crud_logic.remove_nodeid(nodeid))
 
 
-@app.route('/node', methods=['PUT'])
-def update_node():
+@app.route('/node/<int:nodeid>', methods=['PUT'])
+def update_node(nodeid):
     """Update <nodeid> with param values for right keys.
 
     Args:
         nodeid (int): Node ID
     """
     paramdict = request.get_json()
-    return flaskify(crud_logic.update_nodeid(paramdict))
+    return flaskify(crud_logic.update_nodeid(nodeid,paramdict))
 
 
 @app.route('/node', methods=['POST'])
 def add_node():
-    """Update <nodeid> with param values for right keys
-
-    Args:
-        nodeid (int): Node ID
-    """
-    # paramdict = request.args
+    """Update <nodeid> with param values for right keys"""
     paramdict = request.get_json()
     return flaskify(crud_logic.add_node(paramdict))
 

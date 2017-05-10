@@ -1,14 +1,4 @@
-"""Logic for Hello.
-
-Hello World is one of the most complex operations in the world. It requires all
-the robots and nanotechnology from Terminator to define whether or not our
-future will survive an apocalypse.
-
-In other words: always make sure that whenever you add a description it's
-something meaningful that you will enjoy reading days, months, or years later.
-One more thing: you will automatically be associated with those, and some of us
-really enjoy "git blame".
-"""
+"""Logic for crud app"""
 from oto import response
 
 from crud_app.models import crudmodel
@@ -20,8 +10,7 @@ def read_all_nodes():
         Response: All Nodes in a list.
     """
     res = crudmodel.get_nodes_all()
-    if res:
-        return res
+    return res
 
 
 def read_nodeid(nodeid):
@@ -32,10 +21,6 @@ def read_nodeid(nodeid):
         Response: Node for the nodeid that's passed as arg
     """
     res = crudmodel.get_node_for(nodeid)
-    # print(res)
-    # if not res:
-    # 	res = {"message":"No Node exists for given nodeid"}
-
     return res
 
 
@@ -47,11 +32,10 @@ def remove_nodeid(nodeid):
         Response: Status code for operation
     """
     res = crudmodel.delete_node(nodeid)
-    if res:
-        return res
+    return res
 
 
-def update_nodeid(paramdict):
+def update_nodeid(nodeid,paramdict):
     """
     Args:
         nodeid (int): Node ID to update for new column values as passed
@@ -60,9 +44,8 @@ def update_nodeid(paramdict):
     Returns:
         Response: Status code for operation
     """
-    res = crudmodel.update_node(paramdict)
-    if res:
-        return res
+    res = crudmodel.update_node(nodeid,paramdict)
+    return res
 
 
 def add_node(paramdict):
@@ -73,5 +56,4 @@ def add_node(paramdict):
         Response: Status code for operation
     """
     res = crudmodel.create_node(paramdict)
-    if res:
-        return res
+    return res
