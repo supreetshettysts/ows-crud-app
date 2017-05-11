@@ -12,7 +12,7 @@ from crud_app.connectors.mysql import db_session
 
 CREATE_TABLE_TEST_DATA = """
 CREATE TABLE `supreet_node` (
-  `id` int(11) PRIMARY KEY NOT NULL,
+  `id` int(11) PRIMARY KEY,
   `name` varchar(255) DEFAULT NULL,
   `surname` varchar(255) DEFAULT NULL
 );

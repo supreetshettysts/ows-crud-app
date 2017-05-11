@@ -9,7 +9,6 @@ from oto import response
 
 import application
 from crud_app import handlers
-# from crud_app.logic import hello as hello_logic
 from crud_app.logic import crud_logic
 
 
@@ -59,7 +58,6 @@ def test_get_node_not_found(test_node_id, mocker):
 
 
 def test_create_node(test_create_single_node, mocker):
-    # data = {'id': '3', 'name': 'Ned', 'company': 'Stark'}
     mocker.patch.object(
         crud_logic, 'add_node',
         return_value=response.Response(message='Successfully added'))
@@ -72,19 +70,19 @@ def test_create_node(test_create_single_node, mocker):
         crud_logic.add_node.assert_called_with(test_create_single_node)
 
 
-def test_update_node(test_create_single_node, mocker):
-    # data = {'id': '3', 'name': 'Ned', 'company': 'Stark'}
+
+def test_update_node(test_node_id,test_create_single_node, mocker):
     mocker.patch.object(
         crud_logic, 'update_nodeid',
-        return_value=response.Response(message='Updated node successfully'))
+        return_value=response.Response(message=test_create_single_node))
 
     with application.app.test_request_context(
             data=json.dumps(test_create_single_node),
             content_type='application/json'):
-        handler_response = handlers.update_node()
+        handler_response = handlers.update_node(test_node_id)
 
         assert handler_response.status_code == 200
-        crud_logic.update_nodeid.assert_called_with(test_create_single_node)
+        crud_logic.update_nodeid.assert_called_with(test_node_id,test_create_single_node)
 
 
 def test_delete_node(test_node_id, mocker):

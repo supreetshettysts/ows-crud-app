@@ -27,15 +27,15 @@ def test_create_new_node_success(test_create_node, mocker):
     assert result.message == test_create_node
 
 
-def test_update_the_node_success(test_create_single_node, mocker):
+def test_update_the_node_success(test_node_id,test_create_single_node, mocker):
     """Test response contents upon success."""
     mocker.patch.object(
         crudmodel, 'update_node',
-        return_value=response.Response(message='Updated node successfully'))
+        return_value=response.Response(message=test_create_single_node))
 
-    result = crud_logic.update_nodeid(test_create_single_node)
+    result = crud_logic.update_nodeid(test_node_id,test_create_single_node)
     assert result
-    assert result.message == 'Updated node successfully'
+    assert result.message == test_create_single_node
 
 
 def test_delete_the_node_success(test_node_id, mocker):

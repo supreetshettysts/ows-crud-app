@@ -49,7 +49,7 @@ def get_nodes_all():
             result_set = session.query(Node).all()
 
             if not result_set:
-                return response.Response(message=response.create_not_found_response('No nodes found'))
+                return response.create_not_found_response('No nodes found')
 
             total_records = [r.to_dict() for r in result_set]
             return response.Response(message=total_records)
@@ -69,7 +69,7 @@ def get_node_for(nodeid):
         if result_set:
             response_message = response.Response(message=result_set.to_dict())
         else:
-            response_message = response.create_not_found_response('No Node exists for given nodeid')
+            response_message = response.create_not_found_response(message='No Node exists for given nodeid')
             
 
     return response_message
@@ -105,9 +105,8 @@ def update_node(nodeid,paramdict):
     Returns:
         response.Response: the node data for the said nodeid.
     """
-    print(type(paramdict))
-    if nodeid is None:
-        return response.create_error_response('Node ID is mandatory')  
+    if paramdict == {}:
+        return response.create_error_response(message='Update data invalid',code=500)
 
     with mysql.db_session() as session:
         result_set = session.query(Node).get(nodeid)
@@ -118,7 +117,9 @@ def update_node(nodeid,paramdict):
 
             response_message = response.Response(message=result_set.to_dict())
         else:
-            response_message = response.create_not_found_response('No such node found to update')
+           return response.create_not_found_response('No such node found to update')
+
+        
 
     return response_message
 

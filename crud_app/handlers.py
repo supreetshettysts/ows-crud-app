@@ -25,7 +25,7 @@ from crud_app.logic import crud_logic
 
 @app.route('/nodes', methods=['GET'])
 def read_allnodes():
-    """Read all Nodes
+    """Read all Nodes.
 
     Args:
         No Args
@@ -35,7 +35,7 @@ def read_allnodes():
 
 @app.route('/node/<int:nodeid>', methods=['GET'])
 def read_a_node(nodeid):
-    """Read only node with node id passed
+    """Read only node with node id passed.
 
     Args:
         nodeid (int): Node ID
@@ -45,7 +45,7 @@ def read_a_node(nodeid):
 
 @app.route('/node/<int:nodeid>', methods=['DELETE'])
 def remove_node(nodeid):
-    """
+    """Remove node with nodeid.
     Args:
         nodeid (int): Node ID
     """
@@ -60,12 +60,12 @@ def update_node(nodeid):
         nodeid (int): Node ID
     """
     paramdict = request.get_json()
-    return flaskify(crud_logic.update_nodeid(nodeid,paramdict))
+    return flaskify(crud_logic.update_nodeid(nodeid, paramdict))
 
 
 @app.route('/node', methods=['POST'])
 def add_node():
-    """Update <nodeid> with param values for right keys"""
+    """Update <nodeid> with param values for right keys."""
     paramdict = request.get_json()
     return flaskify(crud_logic.add_node(paramdict))
 
