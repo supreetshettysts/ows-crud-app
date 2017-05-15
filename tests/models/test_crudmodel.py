@@ -1,6 +1,4 @@
 """Test Cases for Test model."""
-from oto import response
-
 from crud_app.models import crudmodel
 from tests.testutils import db
 
@@ -68,11 +66,10 @@ def test_add_valid_data():
 @db.test_schema
 def test_update_test_data():
     """Test update_test_data."""
-
     expected_response = {
         'id': 1, 'name': 'Joffrey', 'surname': 'Lannister'}
     db.insert_test_data()
-    response = crudmodel.update_node(1,expected_response)
+    response = crudmodel.update_node(1, expected_response)
 
     assert response.status == 200
     assert response.message == expected_response
@@ -83,27 +80,25 @@ def test_update_with_valid_data():
     """Test for valid data not found."""
     data = {}
     db.insert_test_data()
-    response = crudmodel.update_node(1,data)
+    response = crudmodel.update_node(1, data)
     assert response.status == 400
+
 
 @db.test_schema
 def test_update_test_data_not_found():
     """Test for specified test_id not found."""
     data = {'id': 2, 'name': 'Cersei'}
-    response = crudmodel.update_node(data['id'],data)
+    response = crudmodel.update_node(data['id'], data)
     assert response.status == 404
 
 
 @db.test_schema
 def test_delete_test_data():
     """Test delete_test_data."""
-    expected_response = 'Node deleted successfully'
-
     db.insert_test_data()
     response = crudmodel.delete_node(2)
 
     assert response.status == 200
-    assert response.message == expected_response
 
 
 @db.test_schema

@@ -5,11 +5,11 @@ Manages interactions with MySQL.
 
 from contextlib import contextmanager
 
-from crud_app import config
-
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+
+from crud_app import config
 
 # please don't use the following private variables directly;
 # use db_session

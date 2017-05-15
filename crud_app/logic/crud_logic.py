@@ -1,11 +1,11 @@
-"""Logic for crud app"""
-from oto import response
+"""Logic for crud app."""
 
 from crud_app.models import crudmodel
 
 
 def read_all_nodes():
-    """
+    """Read all nodes.
+
     Returns:
         Response: All Nodes in a list.
     """
@@ -14,7 +14,8 @@ def read_all_nodes():
 
 
 def read_nodeid(nodeid):
-    """
+    """Read a node with nodeid.
+
     Args:
         nodeid (int): Node ID to display
     Returns:
@@ -25,7 +26,8 @@ def read_nodeid(nodeid):
 
 
 def remove_nodeid(nodeid):
-    """
+    """Remove a nodeid with nodeid.
+
     Args:
         nodeid (int): Node ID to delete
     Returns:
@@ -35,8 +37,9 @@ def remove_nodeid(nodeid):
     return res
 
 
-def update_nodeid(nodeid,paramdict):
-    """
+def update_nodeid(nodeid, paramdict):
+    """Update nodeid with nodeid.
+
     Args:
         nodeid (int): Node ID to update for new column values as passed
         paramdict (dict): Column names and their new values to be
@@ -44,12 +47,13 @@ def update_nodeid(nodeid,paramdict):
     Returns:
         Response: Status code for operation
     """
-    res = crudmodel.update_node(nodeid,paramdict)
+    res = crudmodel.update_node(nodeid, paramdict)
     return res
 
 
 def add_node(paramdict):
-    """
+    """Add node for passed json key value pairs.
+
     Args:
         paramdict (dict): Column names and their values
     Returns:

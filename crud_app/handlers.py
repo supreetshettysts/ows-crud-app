@@ -15,11 +15,11 @@ from flask import g
 from flask import jsonify
 from flask import request
 
-from oto.adaptors.flask import flaskify
 from oto import response
+from oto.adaptors.flask import flaskify
 
-from crud_app.api import app
 from crud_app import config
+from crud_app.api import app
 from crud_app.logic import crud_logic
 
 
@@ -46,6 +46,7 @@ def read_a_node(nodeid):
 @app.route('/node/<int:nodeid>', methods=['DELETE'])
 def remove_node(nodeid):
     """Remove node with nodeid.
+
     Args:
         nodeid (int): Node ID
     """
