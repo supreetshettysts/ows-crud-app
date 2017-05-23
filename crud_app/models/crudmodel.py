@@ -68,8 +68,8 @@ def get_node_for(nodeid):
         if result_set:
             response_message = response.Response(message=result_set.to_dict())
         else:
-            response_message = response.create_not_found_response(message='No \
-                Node exists for given nodeid')
+            response_message = response.create_not_found_response(
+                message='No Node exists for given nodeid')
 
     return response_message
 
@@ -87,11 +87,11 @@ def delete_node(nodeid):
         result_set = session.query(Node).get(nodeid)
         if result_set:
             session.delete(result_set)
-            response_message = response.Response(message='Node deleted \
-                                                                successfully')
+            response_message = response.Response(message=
+                'Node deleted successfully')
         else:
-            response_message = response.create_not_found_response('No node \
-                                                            found to delete')
+            response_message = response.create_not_found_response(
+                'No node found to delete')
 
     return response_message
 
@@ -107,8 +107,8 @@ def update_node(nodeid, paramdict):
         response.Response: the node data for the said nodeid.
     """
     if paramdict == {}:
-        return response.create_error_response(message='Update data \
-                                                      invalid', code=500)
+        return response.create_error_response(message=
+            'Update data invalid', code=500)
 
     with mysql.db_session() as session:
         result_set = session.query(Node).get(nodeid)
@@ -119,8 +119,8 @@ def update_node(nodeid, paramdict):
 
             response_message = response.Response(message=result_set.to_dict())
         else:
-            return response.create_not_found_response('No such node found \
-                                                                    to update')
+            return response.create_not_found_response(
+                'No such node found to update')
 
     return response_message
 
@@ -135,12 +135,12 @@ def create_node(paramdict):
     """
     if paramdict is None or 'name' not in paramdict or 'surname' \
     not in paramdict:
-        return response.create_error_response(message=\
+        return response.create_error_response(message=
                                     'Name and surname is mandatory', code=500)
 
     with mysql.db_session() as session:
-        new_node = Node(name=paramdict.get('name'), surname=paramdict.get('\
-                                                                    surname'))
+        new_node = Node(name=paramdict.get('name'), surname=paramdict.
+                                                                get('surname'))
         session.add(new_node)
         response_message = response.Response(message=paramdict)
 
